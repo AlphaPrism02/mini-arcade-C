@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include <time.h>
+#include <string.h>
 #include </workspaces/mini-arcade-C/tictactoe.c>
 
 void main()
@@ -39,10 +40,44 @@ int number_guessing(){
     int ans=(rand()%(max-min+1))+min;
     do{
         printf("GUESS A NUMBER BETWEEN 0 - 100\n");
-        scanf("%d",&guess)
+        scanf("%d",&guess);
         tries++;
     }while(guess!=ans);
     printf("THE ANSWER IS %d\n",ans);
     printf("THE TOOK YOU %d TIMES\n",tries);
+    return 0;
+}
+
+int madlibs(){
+    char adj1[50],adj2[50],adj3[50],noun[50],verb[50];
+
+    printf("enter adjective: ");
+    fgets(adj1,50,stdin);
+    
+    printf("enter noun: ");
+    fgets(noun,50,stdin);
+
+    printf("enter adjective: ");
+    fgets(adj2,50,stdin);
+
+    printf("enter verb: ");
+    fgets(verb,50,stdin);
+
+    printf("enter adjective: ");
+    fgets(adj3,50,stdin);
+
+    //removing newlines
+    adj1[strcspn(adj1, "\n")] = '\0';
+    noun[strcspn(noun, "\n")] = '\0';
+    adj2[strcspn(adj2, "\n")] = '\0';
+    verb[strcspn(verb, "\n")] = '\0';
+    adj3[strcspn(adj3, "\n")] = '\0';
+
+
+    printf("today i went to a %s zoo\n",adj1);
+    printf("in an exhibit, i saw %s\n",noun);
+    printf("%s was %s and %s\n",noun,adj2,verb);
+    printf("i was %s\n",adj3);
+
     return 0;
 }
