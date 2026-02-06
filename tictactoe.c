@@ -3,7 +3,9 @@
 #include <math.h>
 #include <stdbool.h>
 
-void display();
+void display(char grid[3][3]);
+bool invalid_input(int row_ind,char col,int *col_ind);
+bool not_occupied(int row_ind,int col_ind);
 
 void start_tictactoe()
 {
@@ -14,23 +16,21 @@ void start_tictactoe()
     char grid[3][3]={{' ',' ',' '},{' ',' ',' '},{' ',' ',' '}};
     display(grid);
     
-    int row_ind;
-    char col_ind;
+    int row_ind,col_ind;
+    char col;
     bool player_win;
     while(no_of_turns<9)
     {
         if(no_of_turns%2!=0)
         {
             printf("Your Turn:");
-            scanf("%d%c",&row_ind,&col_ind);
+            scanf("%d%c",&row_ind,&col);
 
-            if(!correct_input(row_ind,col_ind))
+            if(invalid_input(row_ind,col,&col_ind))
             {
                 printf("invalid values");
                 continue;
             }
-
-            
 
             if(not_occupied(row_ind,col_ind))
             {
@@ -52,4 +52,30 @@ void display(char grid[3][3])
         printf("%d: %c | %c | %c\n",i+1,grid[i][0],grid[i][1],grid[i][2]);
         if(i!=2){printf("----------------\n");}
     }
+}
+
+bool invalid_input(int row_ind,char col,int *col_ind)
+{
+    if(row_ind>2){return false;}
+
+    if(col=='a' || col=='A')
+    {
+        *col_ind=0;
+        return false;
+    }
+    else if(col=='b' || col=='B')
+    {
+        *col_ind=1;
+        return false;
+    }
+    else if(col=='c' || col=='C')
+    {
+        *col_ind=2;
+        return false;
+    }
+}
+
+bool not_occupied(int row_ind,int col_ind)
+{
+    
 }

@@ -6,6 +6,5 @@
 void main()
 {
     //add menu to start different games
-    printf("HELLO WORLD");
     start_tictactoe();
 }
