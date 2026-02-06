@@ -9,16 +9,15 @@ bool occupied(char grid_val);
 
 void start_tictactoe()
 {
-    //int gridvals[3][3]={{0,0,0},{0,0,0},{0,0,0}};
     printf("Tic Tac Toe:\nOn your turn, enter coordinates of the grid.\nFor Example: 1a for the first square of the first column");
 
     int no_of_turns=1;
     char grid[3][3]={{' ',' ',' '},{' ',' ',' '},{' ',' ',' '}};
     display(grid);
     
-    int row_ind,col_ind;
+    int row_ind,col_ind,winner;
     char col;
-    bool player_win;
+
     while(no_of_turns<9)
     {
         if(no_of_turns%2!=0)
@@ -27,16 +26,34 @@ void start_tictactoe()
             scanf("%d%c",&row_ind,&col);
 
             if(invalid_input(row_ind,col,&col_ind) || occupied(grid[row_ind][col_ind]))
-            {
-                continue; //allows the user to reenter the values without going thru the rest of the code
-            }
+            {continue;}  //allows the user to reenter the values without going thru the rest of the code
 
             grid[row_ind][col_ind]='X'; //sets the player mark;
 
+            no_of_turns++;
         }
-        no_of_turns++;
+        else
+        {
+            
+        }
+        winner=player_winner(grid);
+        if(winner==0){continue;}
+        else if(winner==1)
+        {
+            printf("You Win!");
+            break;
+        }
+        else if(winner==2)
+        {
+            printf("You Lose :(");
+            break;
+        }
+        else
+        {
+            printf("Tie");
+            break;
+        }
     }
-    
 }
 
 void display(char grid[3][3])
@@ -92,9 +109,16 @@ bool occupied(char grid_val)
         printf("You already played there");
         return true;
     }
-    else
+    else if(grid_val=='O')
     {
         printf("The computer has played there");
         return true;
     }
+    else
+    {return false;}
+}
+
+int winner(char *grid[3][3])
+{
+
 }
