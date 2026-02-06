@@ -5,7 +5,7 @@
 
 void display(char grid[3][3]);
 bool invalid_input(int row_ind,char col,int *col_ind);
-bool not_occupied(int row_ind,int col_ind);
+bool occupied(char grid_val);
 
 void start_tictactoe()
 {
@@ -26,24 +26,22 @@ void start_tictactoe()
             printf("Your Turn:");
             scanf("%d%c",&row_ind,&col);
 
-            if(invalid_input(row_ind,col,&col_ind))
+            if(invalid_input(row_ind,col,&col_ind) || occupied(grid[row_ind][col_ind]))
             {
-                printf("invalid values");
-                continue;
+                continue; //allows the user to reenter the values without going thru the rest of the code
             }
 
-            if(not_occupied(row_ind,col_ind))
-            {
-                
-            }
+            grid[row_ind][col_ind]='X'; //sets the player mark;
+
         }
+        no_of_turns++;
     }
     
 }
 
 void display(char grid[3][3])
 {
-    printf("\033[2J\033[H"); //to clear the screen if any grid is already present
+    //printf("\033[2J\033[H"); //to clear the screen if any grid is already present
 
     printf("   a   b   c\n");
 
@@ -56,7 +54,11 @@ void display(char grid[3][3])
 
 bool invalid_input(int row_ind,char col,int *col_ind)
 {
-    if(row_ind>2){return false;}
+    if(row_ind>2 || row_ind<0)
+    {
+        printf("invalid values");
+        return true;
+    }
 
     if(col=='a' || col=='A')
     {
@@ -73,9 +75,26 @@ bool invalid_input(int row_ind,char col,int *col_ind)
         *col_ind=2;
         return false;
     }
+    else
+    {
+        printf("invalid values");
+        return true;
+    }
 }
 
-bool not_occupied(int row_ind,int col_ind)
+bool occupied(char grid_val)
 {
-    
+    if(grid_val==' ')
+    {return false;}
+
+    if(grid_val=='X')
+    {
+        printf("You already played there");
+        return true;
+    }
+    else
+    {
+        printf("The computer has played there");
+        return true;
+    }
 }
