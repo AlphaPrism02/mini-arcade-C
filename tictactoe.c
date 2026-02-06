@@ -2,7 +2,6 @@
 #include <stdlib.h>
 #include <math.h>
 #include <stdbool.h>
-#include <time.h>
 
 void display();
 
