@@ -28,7 +28,7 @@ void main()
         start_tictactoe();
         break;
         case 2:
-        start_rock_paper_scissors();
+        startrockpaperscissors();
         case 3:
         number_guessing();
     }
