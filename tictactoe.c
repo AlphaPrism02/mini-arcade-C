@@ -6,10 +6,11 @@
 void display(char grid[3][3]);
 bool invalid_input(int row_ind,char col,int *col_ind);
 bool occupied(char grid_val);
+int player_winner(char grid[3][3], int no_of_turns);
 
 void start_tictactoe()
 {
-    printf("Tic Tac Toe:\nOn your turn, enter coordinates of the grid.\nFor Example: 1a for the first square of the first column");
+    printf("Tic Tac Toe:\nOn your turn, enter coordinates of the grid.\nFor Example: 1a for the first square of the first column\n");
 
     int no_of_turns=1;
     char grid[3][3]={{' ',' ',' '},{' ',' ',' '},{' ',' ',' '}};
@@ -30,13 +31,15 @@ void start_tictactoe()
 
             grid[row_ind][col_ind]='X'; //sets the player mark;
 
-            no_of_turns++;
         }
         else
         {
             
         }
-        winner=player_winner(grid);
+
+        no_of_turns++;
+
+        winner=player_winner(grid,no_of_turns);
         if(winner==0){continue;}
         else if(winner==1)
         {
@@ -50,7 +53,7 @@ void start_tictactoe()
         }
         else
         {
-            printf("Tie");
+            printf("Tied -_-");
             break;
         }
     }
@@ -118,7 +121,26 @@ bool occupied(char grid_val)
     {return false;}
 }
 
-int winner(char *grid[3][3])
+int player_winner(char grid[3][3], int no_of_turns)
 {
+    if(no_of_turns==9) {return 3;} //tie
 
+    for(int i=0;i<3;i++)
+    {
+        if( (grid[i][0]== 'X' && grid[i][1]== 'X' && grid[i][2]== 'X') || 
+            (grid[0][i]== 'X' && grid[1][i]== 'X' && grid[2][i]== 'X') ||
+            (grid[i][i]== 'X' && grid[i][i]== 'X' && grid[i][i]== 'X')  )   
+            
+        {return 1;} //player win
+
+
+        else if((grid[i][0]== 'O' && grid[i][1]== 'O' && grid[i][2]== 'O') ||
+                (grid[0][i]== 'O' && grid[1][i]== 'O' && grid[2][i]== 'O') ||
+                (grid[i][i]== 'O' && grid[i][i]== 'O' && grid[i][i]== 'O')  )
+                
+        {return 2;} //computer win
+
+    }
+
+    return 0; //continue game;
 }
