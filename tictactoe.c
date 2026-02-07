@@ -161,8 +161,6 @@ bool bad_rng(char grid_val)
 int player_winner(char grid[3][3], int no_of_turns)
 {
     if(no_of_turns<4)  {return 0;} //game has to be at least 4 moves long to win
-    
-    if(no_of_turns==9) {return 3;} //tie
 
     for(int i=0;i<3;i++)
     {
@@ -182,6 +180,7 @@ int player_winner(char grid[3][3], int no_of_turns)
         {return 2;} //computer win
 
     }
+    if(no_of_turns==9) {return 3;} //tie
 
     return 0; //continue game;
 }
