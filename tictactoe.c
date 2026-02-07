@@ -22,8 +22,6 @@ void start_tictactoe()
 
     while(no_of_turns<9)
     {
-        no_of_turns++;
-
         if(no_of_turns%2!=0) //player turn
         {
             sleep(1.5);
@@ -40,6 +38,7 @@ void start_tictactoe()
 
             grid[row_ind][col_ind]='X'; //sets the player mark;
 
+            no_of_turns++;
         }
         else //computer turn
         {
@@ -53,6 +52,8 @@ void start_tictactoe()
 
             grid[row_ind][col_ind]='O'; //sets the computer mark;
             sleep(1.5);
+
+            no_of_turns++;
         }
 
         display(grid);
