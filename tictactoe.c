@@ -22,7 +22,7 @@ void start_tictactoe()
 
     while(no_of_turns<9)
     {
-        if(no_of_turns%2!=0) //player turn
+        if(no_of_turns%2==0) //player turn
         {
             sleep(1.5);
             printf("Your Turn:");
