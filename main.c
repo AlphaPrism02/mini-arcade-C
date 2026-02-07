@@ -10,7 +10,9 @@
 
 
 
-int number_guessing();
+//int number_guessing();
+
+
 void main()
 {
     //add menu to start different games
@@ -41,6 +43,7 @@ void main()
     
 }
 
+/*
 int number_guessing(){
     srand(time(NULL));
     int guess,tries=0;
@@ -56,4 +59,5 @@ int number_guessing(){
     printf("THE TOOK YOU %d TIMES\n",tries);
     return 0;
 }
+*/
 
