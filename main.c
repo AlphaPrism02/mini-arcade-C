@@ -5,6 +5,7 @@
 #include <string.h>
 #include </workspaces/mini-arcade-C/tictactoe.c>
 #include </workspaces/mini-arcade-C/rock_paper_scissors.c>
+#include </workspaces/mini-arcade-C/calcgame.c>
 int number_guessing();
 void main()
 {
@@ -14,9 +15,9 @@ void main()
     printf("ENTER NAME: \n");
     fgets(name, sizeof(name), stdin);  
     printf(".......MINI ARCADE GAMES.......\n");
-    Sleep(1000);
+    sleep(1.5);
     printf("HEYYYY %s \n", name);
-    Sleep(800);
+    sleep(1);
 
     printf("Feeling brave enough for TIC TAC TOE?\n");
     printf("1 - Bring it on \n");
