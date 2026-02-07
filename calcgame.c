@@ -3,7 +3,7 @@
 #include <stdlib.h>
 #include <unistd.h>
 
-int start_calcgame() {
+void start_calcgame() {
     int playerLife = 3, compLife = 3;
     int a, b, ans, userAns;
     char op;
@@ -61,7 +61,4 @@ int start_calcgame() {
         printf("\n COMPUTER WINS!\n");
     else
         printf("\n YOU WIN!\n");
-
-
-return 0;
 }

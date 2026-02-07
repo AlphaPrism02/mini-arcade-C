@@ -6,6 +6,10 @@
 #include </workspaces/mini-arcade-C/tictactoe.c>
 #include </workspaces/mini-arcade-C/rock_paper_scissors.c>
 #include </workspaces/mini-arcade-C/calcgame.c>
+#include </workspaces/mini-arcade-C/hangman.c>
+
+
+
 int number_guessing();
 void main()
 {
@@ -19,9 +23,8 @@ void main()
     printf("HEYYYY %s \n", name);
     sleep(1);
 
-    printf("Feeling brave enough for TIC TAC TOE?\n");
-    printf("1 - Bring it on \n");
-    printf("2 - I'll warm up with mini games \n");
+    printf("What game would you like to play?\n");
+    printf("1 - Tic-Tac-Toe \n2 - Rock Paper Scissors \n3- Math Quiz\n4- Hangman\n");
     scanf("%d",&choice);
 
     switch(choice){
@@ -31,7 +34,9 @@ void main()
         case 2:
         startrockpaperscissors();
         case 3:
-        number_guessing();
+        start_calcgame();
+        case 4:
+        start_hangman();
     }
     
 }

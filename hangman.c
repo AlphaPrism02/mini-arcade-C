@@ -64,7 +64,7 @@ void playLevel(char word[]) {
     }
 }
 
-int start_hangman() {
+void start_hangman() {
     printf("HANGMAN GAME IN C \n");
 
     char levels[5][20] = {
@@ -82,5 +82,4 @@ int start_hangman() {
     }
 
     printf("\n CONGRATULATIONS! You completed all levels!");
-    return 0;
 }
