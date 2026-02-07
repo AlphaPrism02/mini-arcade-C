@@ -13,7 +13,7 @@ void start_tictactoe()
 {
     printf("Tic Tac Toe:\nOn your turn, enter coordinates of the grid.\nFor Example: 1a for the first square of the first column\n");
 
-    int no_of_turns=0;
+    int no_of_turns=1;
     char grid[3][3]={{' ',' ',' '},{' ',' ',' '},{' ',' ',' '}};
     display(grid);
 
