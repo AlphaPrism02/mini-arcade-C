@@ -4,17 +4,17 @@
 // Function to display hangman based on lives
 void hangman(int lives) {
     if (lives == 5)
-        printf("\n O ");
-    else if (lives == 4)
-        printf("\n O\n | ");
-    else if (lives == 3)
-        printf("\n O\n/| ");
-    else if (lives == 2)
-        printf("\n O\n/|\\ ");
-    else if (lives == 1)
-        printf("\n O\n/|\\\n/ ");
-    else if (lives == 0)
         printf("\n O\n/|\\\n/ \\ ");
+    else if (lives == 4)
+        printf("\n O\n/|\\\n/ ");
+    else if (lives == 3)
+        printf("\n O\n/|\\ ");
+    else if (lives == 2)
+        printf("\n O\n/| ");
+    else if (lives == 1)
+        printf("\n O\n | ");  
+    else if (lives == 0)
+        printf("\n O ");   
 }
 
 // Main game logic
