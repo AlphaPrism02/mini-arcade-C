@@ -4,10 +4,10 @@
 #include <stdbool.h>
 
 void display(char grid[3][3]);
-bool invalid_input(int row_ind,char col,int *col_ind);
+bool invalidInput(int row_ind,char col,int *col_ind);
 bool occupied(char grid_val);
-bool bad_rng(char grid_val);
-int player_winner(char grid[3][3], int no_of_turns);
+bool badRng(char grid_val);
+int playerWinner(char grid[3][3], int no_of_turns);
 
 void start_tictactoe()
 {
@@ -29,7 +29,7 @@ void start_tictactoe()
             scanf("%d %c",&row_ind,&col);
             row_ind--; //We take 1,2,3 as input so we need to row_ind-1 to correct the inputs
 
-            if(invalid_input(row_ind,col,&col_ind) || occupied(grid[row_ind][col_ind])) 
+            if(invalidInput(row_ind,col,&col_ind) || occupied(grid[row_ind][col_ind])) 
             {
                 int ch;
                 while ((ch = getchar()) != '\n' && ch != EOF); //waits for the input to clear
@@ -47,7 +47,7 @@ void start_tictactoe()
             row_ind = rand() % 3;  // 0, 1, or 2
             col_ind = rand() % 3;
 
-            if(bad_rng(grid[row_ind][col_ind]))
+            if(badRng(grid[row_ind][col_ind]))
             {continue;} //computer retries to pick a grid value
 
             grid[row_ind][col_ind]='O'; //sets the computer mark;
@@ -58,7 +58,7 @@ void start_tictactoe()
 
         display(grid);
 
-        winner=player_winner(grid,no_of_turns);
+        winner=playerWinner(grid,no_of_turns);
         if(winner==0){continue;}
         else if(winner==1)
         {
@@ -92,7 +92,7 @@ void display(char grid[3][3])
     }
 }
 
-bool invalid_input(int row_ind,char col,int *col_ind)
+bool invalidInput(int row_ind,char col,int *col_ind)
 {
     if(row_ind>2 || row_ind<0)
     {
@@ -141,7 +141,7 @@ bool occupied(char grid_val)
     {return false;}
 }
 
-bool bad_rng(char grid_val)
+bool badRng(char grid_val)
 {
     if(grid_val==' ')
     {return false;}
@@ -158,7 +158,7 @@ bool bad_rng(char grid_val)
     {return false;}
 }
 
-int player_winner(char grid[3][3], int no_of_turns)
+int playerWinner(char grid[3][3], int no_of_turns)
 {
     if(no_of_turns<4)  {return 0;} //game has to be at least 4 moves long to win
 
