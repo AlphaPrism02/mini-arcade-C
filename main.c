@@ -18,8 +18,8 @@ void main()
     printf("ENTER NAME: \n");
     fgets(name, sizeof(name), stdin);  
     printf(".......MINI ARCADE GAMES.......\n");
-    sleep(2);
-    
+    sleep(1.5);
+
     printf("What game would you like to play?\n");
     printf("1 - Tic-Tac-Toe \n2 - Rock Paper Scissors \n3 - Math Quiz\n4 - Hangman\n5 - Tower Of Hanoi\n");
     scanf("%d",&choice);
@@ -30,12 +30,16 @@ void main()
         break;
         case 2:
         startrockpaperscissors();
+        break;
         case 3:
         start_calcgame();
+        break;
         case 4:
         start_hangman();
+        break;
         case 5:
         start_toh();
+        break;
     }
     
 }
