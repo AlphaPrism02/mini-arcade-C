@@ -3,7 +3,7 @@
 #include <math.h>
 #include <stdbool.h>
 
-void display(char grid[3][3]);
+void displayGrid(char grid[3][3]);
 bool invalidInput(int row_ind,char col,int *col_ind);
 bool occupied(char grid_val);
 bool badRng(char grid_val);
@@ -15,7 +15,7 @@ void start_tictactoe()
 
     int no_of_turns=0;
     char grid[3][3]={{' ',' ',' '},{' ',' ',' '},{' ',' ',' '}};
-    display(grid);
+    displayGrid(grid);
 
     int row_ind,col_ind,winner;
     char col;
@@ -56,7 +56,7 @@ void start_tictactoe()
             no_of_turns++;
         }
 
-        display(grid);
+        displayGrid(grid);
 
         winner=playerWinner(grid,no_of_turns);
         if(winner==0){continue;}
@@ -79,7 +79,7 @@ void start_tictactoe()
     //display(grid);
 }
 
-void display(char grid[3][3])
+void displayGrid(char grid[3][3])
 {
     printf("\033[2J\033[H"); //to clear the screen if any grid is already present
 

@@ -6,9 +6,11 @@
 int countMinimumMoves(int n, int min_moves);
 int choseDiskAmt();
 void diskOprInput(int *diskno,char *from_where,char *to_where,int NO_OF_DISKS);
-void moveDisk(int diskno,char from[][20],char to[][20],int NO_OF_DISKS,char from_where,char to_where);
+bool moveDisk(int diskno,char from[][20],char to[][20],int NO_OF_DISKS,char from_where,char to_where);
 bool isInvalidInput(int diskno,char from_where,char to_where,int NO_OF_DISKS);
-int topRingIndex(char rings[][20],int NO_OF_DISKS)
+int topRingIndex(char rings[][20],int NO_OF_DISKS);
+int emptySpotIndex(char spot[][20],int NO_OF_DISKS);
+void displayTOH(char start[][20],char aux[][20],char dest[][20],int NO_OF_DISKS);
 
 void start_toh()
 {
@@ -37,10 +39,11 @@ void start_toh()
     char from_where,to_where;
 
     int no_of_turns=1;
-    while(strncmp(DISKS[0],destpos[0],6) != 0)
+    while(strcmp(DISKS[0],destpos[0]) != 0)
     {
         diskOprInput(&diskno,&from_where,&to_where,NO_OF_DISKS);
 
+        bool disk_moved;
         switch(from_where)
         {
             case 's':
@@ -50,19 +53,34 @@ void start_toh()
                                 printf("disc is already here\n");
                                 break;
                         case 'a':
-                                moveDisk(diskno,startpos,auxpos,NO_OF_DISKS,from_where,to_where);
+                                disk_moved=moveDisk(diskno,startpos,auxpos,NO_OF_DISKS,from_where,to_where);
                                 break;
                         case 'd':
-                                moveDisk(diskno,startpos,destpos,NO_OF_DISKS,from_where,to_where);
+                                disk_moved=moveDisk(diskno,startpos,destpos,NO_OF_DISKS,from_where,to_where);
                                 break;
                     }
 
             
         }
         
+        if(!disk_moved)
+        {continue;}
+
+        displayTOH(startpos,auxpos,destpos,NO_OF_DISKS);
+        
     }
 
 
+}
+
+void displayTOH(char start[][20],char aux[][20],char dest[][20],int NO_OF_DISKS)
+{
+    for(int i=0;i<NO_OF_DISKS;i++)
+    {
+        printf("%s      %s      %s\n",start[i],aux[i],dest[i]);
+    }
+
+    printf("_______________      _______________      _______________\n       s                    a                    d\n");
 }
 
 int countMinimumMoves(int n, int min_moves)
@@ -145,17 +163,46 @@ bool isInvalidInput(int diskno,char from_where,char to_where,int NO_OF_DISKS)
     }
 }
 
-void moveDisk(int diskno,char from[][20],char to[][20],int NO_OF_DISKS,char from_where,char to_where)
+bool moveDisk(int diskno,char from[][20],char to[][20],int NO_OF_DISKS,char from_where,char to_where)
 {
     printf("moving disc %d from %c to %c\n",diskno,from_where,to_where);
 
     int top_ring=topRingIndex(from,NO_OF_DISKS);
+
+    if(top_ring==-1)
+    {
+        printf("this place is empty");
+        return false;
+    }
+
+    int empty_spot=emptySpotIndex(to,NO_OF_DISKS);
+    
+    strcpy(from[top_ring],to[empty_spot]); //copying top ring value to empty spot value
+    strcpy("",from[top_ring]); //resetting top ring value to ""
+
+    return true;
 }
 
 int topRingIndex(char rings[][20],int NO_OF_DISKS)
 {
     for(int i=0;i<NO_OF_DISKS;i++)
     {
-        
+        if(strcmp(rings[i],"") != 0)
+        {
+            return i;
+        }
     }
+    return -1;
+}
+
+int emptySpotIndex(char spot[][20],int NO_OF_DISKS)
+{
+    for(int i=0;i<NO_OF_DISKS;i++)
+    {
+        if(strcmp(spot[i],"") != 0)
+        {
+            return --i;
+        }
+    }
+    return --NO_OF_DISKS;
 }
