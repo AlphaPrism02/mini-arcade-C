@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <time.h>
 #include <stdbool.h>
+#include <string.h>
 
 int countMinMoves(int n);
 int choseDiskAmt();
@@ -11,6 +12,8 @@ bool isInvalidInput(int diskno,char from_where,char to_where,int NO_OF_DISKS);
 int topRingIndex(char rings[][20],int NO_OF_DISKS);
 int emptySpotIndex(char spot[][20],int NO_OF_DISKS);
 void displayTOH(char start[][20],char aux[][20],char dest[][20],int NO_OF_DISKS);
+bool ringExistsHere(char from[][20],int diskno,int top_ring);
+bool bigRingOnSmall(char from[][20],int top_ring,char to[][20],int empty_spot,int NO_OF_DISKS);
 
 void start_toh()
 {
@@ -38,7 +41,7 @@ void start_toh()
     int diskno;
     char from_where,to_where;
 
-    int no_of_turns=1;
+    int no_of_turns=0;
     while(strcmp(DISKS[0],destpos[0]) != 0)
     {
         diskOprInput(&diskno,&from_where,&to_where,NO_OF_DISKS);
@@ -54,24 +57,55 @@ void start_toh()
                                 break;
                         case 'a':
                                 disk_moved=moveDisk(diskno,startpos,auxpos,NO_OF_DISKS,from_where,to_where);
-                                displayTOH(startpos,auxpos,destpos,NO_OF_DISKS);
                                 break;
                         case 'd':
                                 disk_moved=moveDisk(diskno,startpos,destpos,NO_OF_DISKS,from_where,to_where);
                                 break;
                     }
+                    break;
 
-            
+            case 'a':
+                    switch(to_where)
+                    {
+                        case 's':
+                                disk_moved=moveDisk(diskno,auxpos,startpos,NO_OF_DISKS,from_where,to_where);
+                                break;
+                        case 'a':
+                                printf("disc is already here\n");
+                                break;
+                        case 'd':
+                                disk_moved=moveDisk(diskno,auxpos,destpos,NO_OF_DISKS,from_where,to_where);
+                                break;
+                    }
+                    break;
+
+            case 'd':
+                    switch(to_where)
+                    {
+                        case 's':
+                                disk_moved=moveDisk(diskno,destpos,startpos,NO_OF_DISKS,from_where,to_where);
+                                break;
+                        case 'a':
+                                disk_moved=moveDisk(diskno,destpos,auxpos,NO_OF_DISKS,from_where,to_where);
+                                break;
+                        case 'd':
+                                printf("disc is already here\n");
+                                break;
+                    }
+                    break;
         }
         
         if(!disk_moved)
         {continue;}
 
+        no_of_turns++;
         displayTOH(startpos,auxpos,destpos,NO_OF_DISKS);
         
     }
 
-
+    sleep(1);
+    printf("You Win!\nYou completed this level in %d moves\n",no_of_turns);
+    printf("The minimum moves required are: %d\n",MINIMUM_MOVES);
 }
 
 void displayTOH(char start[][20],char aux[][20],char dest[][20],int NO_OF_DISKS)
@@ -98,7 +132,7 @@ void displayTOH(char start[][20],char aux[][20],char dest[][20],int NO_OF_DISKS)
 
 int countMinMoves(int n)
 {
-    return (1 << n) - 1;   // 2^n - 1 (this is from chatgpt but makes sense to use)
+    return (1 << n) - 1;   // 2^n - 1 this is called bit shifting (this is from chatgpt but makes sense to use)
 
     /*
     if (n == 0)
@@ -109,7 +143,7 @@ int countMinMoves(int n)
     return 2* countMinMoves(n - 1) +1;
     */
 
-    //This was my original idea
+    //This was my original idea (recursive)
     
 }
 
@@ -187,17 +221,27 @@ bool moveDisk(int diskno,char from[][20],char to[][20],int NO_OF_DISKS,char from
 {
     printf("moving disc %d from %c to %c\n",diskno,from_where,to_where);
 
-
-
     int top_ring=topRingIndex(from,NO_OF_DISKS);
 
     if(top_ring==-1)
     {
-        printf("this place is empty");
+        printf("this place is empty\n");
+        return false;
+    }
+
+    if(!ringExistsHere(from,diskno,top_ring))
+    {
+        printf("ring does not exist here\n");
         return false;
     }
 
     int empty_spot=emptySpotIndex(to,NO_OF_DISKS);
+
+    if(bigRingOnSmall(from,top_ring,to,empty_spot,NO_OF_DISKS))
+    {
+        printf("Cant put a bigger ring on top of a smaller ring\n");
+        return false;
+    }
     
     strcpy(to[empty_spot],from[top_ring]); //copying top ring value to empty spot value
     strcpy(from[top_ring],""); //resetting top ring value to ""
@@ -227,4 +271,45 @@ int emptySpotIndex(char spot[][20],int NO_OF_DISKS)
         }
     }
     return --NO_OF_DISKS;
+}
+
+bool ringExistsHere(char from[][20],int diskno,int top_ring)
+{
+    char diskchar=diskno+'0';
+
+    if(strchr(from[top_ring],diskchar))
+    {return true;}
+
+    return false;
+}
+
+bool bigRingOnSmall(char from[][20],int top_ring,char to[][20],int empty_spot,int NO_OF_DISKS)
+{
+    if(empty_spot+1>=NO_OF_DISKS)
+    {return false;}
+
+    int ring_from,ring_to;
+    
+    for(int i=strlen(from[top_ring])-1;i>=0;i--)
+    {
+        if(isdigit(from[top_ring][i]))
+        {
+            ring_from=(int)from[top_ring][i];
+            break;
+        }
+    }
+
+    for(int i=strlen(to[empty_spot+1])-1;i>=0;i--)
+    {
+        if(isdigit(to[empty_spot+1][i]))
+        {
+            ring_to=(int)to[empty_spot+1][i];
+            break;
+        }
+    }
+    
+    if(ring_from>ring_to)
+    {return true;}
+
+    return false;
 }
