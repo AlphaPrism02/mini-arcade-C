@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <time.h>
 
-int startrockpaperscissors() {
+int start_rockpaperscissors() {
     int user, computer;
     int userScore = 0, compScore = 0;
 

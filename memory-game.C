@@ -4,7 +4,7 @@
 #include<string.h>
 #include<unistd.h>
 
-int main()
+int start_numMemory()
 {
     char number[20]="";
     char guess[20];

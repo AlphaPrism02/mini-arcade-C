@@ -3,7 +3,7 @@
 #include <time.h>
 #include <stdbool.h>
 
-int countMinimumMoves(int n, int min_moves);
+int countMinMoves(int n);
 int choseDiskAmt();
 void diskOprInput(int *diskno,char *from_where,char *to_where,int NO_OF_DISKS);
 bool moveDisk(int diskno,char from[][20],char to[][20],int NO_OF_DISKS,char from_where,char to_where);
@@ -16,12 +16,13 @@ void start_toh()
 {
     const char DISKS[6][20]={"      *1*","     **2**","    ***3***","   ****4****","  *****5*****"," ******6******"};
 
+    printf("\033[2J\033[H"); //to clear the screen
     printf("You have to move the rings such that they move to the destination in the same order.\n");
     printf("Rules:\n1. You can only move one ring at a time\n2. You cannot put a larger ring on a smaller ring\n");
     sleep(1.5);
 
     const int NO_OF_DISKS=choseDiskAmt();
-    const int MINIMUM_MOVES=countMinimumMoves(NO_OF_DISKS, 0);
+    const int MINIMUM_MOVES=countMinMoves(NO_OF_DISKS);
 
     char startpos[NO_OF_DISKS][20],auxpos[NO_OF_DISKS][20],destpos[NO_OF_DISKS][20];
 
@@ -30,10 +31,9 @@ void start_toh()
         strcpy(startpos[i], DISKS[i]);
         strcpy(auxpos[i],"");
         strcpy(destpos[i],"");
-        printf("%s\n",startpos[i]);
     }
-    printf("_______________      _______________      _______________\n       s                    a                    d\n");
-    sleep(3);
+    //printf("_______________      _______________      _______________\n       s                    a                    d\n");
+    displayTOH(startpos,auxpos,destpos,NO_OF_DISKS);
     
     int diskno;
     char from_where,to_where;
@@ -54,6 +54,7 @@ void start_toh()
                                 break;
                         case 'a':
                                 disk_moved=moveDisk(diskno,startpos,auxpos,NO_OF_DISKS,from_where,to_where);
+                                displayTOH(startpos,auxpos,destpos,NO_OF_DISKS);
                                 break;
                         case 'd':
                                 disk_moved=moveDisk(diskno,startpos,destpos,NO_OF_DISKS,from_where,to_where);
@@ -75,29 +76,46 @@ void start_toh()
 
 void displayTOH(char start[][20],char aux[][20],char dest[][20],int NO_OF_DISKS)
 {
-    for(int i=0;i<NO_OF_DISKS;i++)
+    for(int i=0;i<3;i++)
     {
-        printf("%s      %s      %s\n",start[i],aux[i],dest[i]);
+        for(int j=0;j<NO_OF_DISKS;j++)
+        {
+            if(i==0)
+            {printf("%s\n",start[j]);}
+            else if(i==1)
+            {printf("%s\n",aux[j]);}
+            else
+            {printf("%s\n",dest[j]);}
+        }
+        if(i==0)
+        {printf("_______________\n       s\n");}
+        else if(i==1)
+        {printf("_______________\n       a\n");}
+        else
+        {printf("_______________\n       d\n");}
     }
-
-    printf("_______________      _______________      _______________\n       s                    a                    d\n");
 }
 
-int countMinimumMoves(int n, int min_moves)
+int countMinMoves(int n)
 {
-    if (n == 1)
+    return (1 << n) - 1;   // 2^n - 1 (this is from chatgpt but makes sense to use)
+
+    /*
+    if (n == 0)
     {
-        //printf("Move disk 1 from %c to %c\n", source, destination);
-        return min_moves+1;
+        return 0;
     }
 
-    countMinimumMoves(n - 1, min_moves+1);
-    //printf("Move disk %d from %c to %c\n", n, source, destination);
-    countMinimumMoves(n - 1, min_moves+1);
+    return 2* countMinMoves(n - 1) +1;
+    */
+
+    //This was my original idea
+    
 }
 
 int choseDiskAmt()
 {
+    sleep(2);
     int n;
     printf("Enter the number of disks you want to play with\nPick a number between 3-6\n");
     scanf("%d",&n);
@@ -129,9 +147,9 @@ void diskOprInput(int *diskno,char *from_where,char *to_where,int NO_OF_DISKS)
         exit(0);
     }
 
-    scanf("%c %c",&from_where,&to_where);
+    scanf(" %c %c",from_where,to_where);
 
-    if(isInvalidInput(diskno,from_where,to_where,NO_OF_DISKS))
+    if(isInvalidInput(*diskno,*from_where,*to_where,NO_OF_DISKS))
     {
         diskOprInput(diskno,from_where,to_where,NO_OF_DISKS);
     }
@@ -161,11 +179,15 @@ bool isInvalidInput(int diskno,char from_where,char to_where,int NO_OF_DISKS)
         printf("Invalid position character\n");
         return true;
     }
+
+    return false;
 }
 
 bool moveDisk(int diskno,char from[][20],char to[][20],int NO_OF_DISKS,char from_where,char to_where)
 {
     printf("moving disc %d from %c to %c\n",diskno,from_where,to_where);
+
+
 
     int top_ring=topRingIndex(from,NO_OF_DISKS);
 
@@ -177,8 +199,8 @@ bool moveDisk(int diskno,char from[][20],char to[][20],int NO_OF_DISKS,char from
 
     int empty_spot=emptySpotIndex(to,NO_OF_DISKS);
     
-    strcpy(from[top_ring],to[empty_spot]); //copying top ring value to empty spot value
-    strcpy("",from[top_ring]); //resetting top ring value to ""
+    strcpy(to[empty_spot],from[top_ring]); //copying top ring value to empty spot value
+    strcpy(from[top_ring],""); //resetting top ring value to ""
 
     return true;
 }
