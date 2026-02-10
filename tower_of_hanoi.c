@@ -290,7 +290,7 @@ bool bigRingOnSmall(char from[][20],int top_ring,char to[][20],int empty_spot,in
 
     int ring_from,ring_to;
     
-    for(int i=strlen(from[top_ring])-1;i>=0;i--)
+    for(int i=strlen(from[top_ring])-1;i>=0;i--) //checks the str len of string at the top ring index
     {
         if(isdigit(from[top_ring][i]))
         {
@@ -299,7 +299,7 @@ bool bigRingOnSmall(char from[][20],int top_ring,char to[][20],int empty_spot,in
         }
     }
 
-    for(int i=strlen(to[empty_spot+1])-1;i>=0;i--)
+    for(int i=strlen(to[empty_spot+1])-1;i>=0;i--) //checks str len of string at empty spot+1 (empty spot has null string)
     {
         if(isdigit(to[empty_spot+1][i]))
         {
