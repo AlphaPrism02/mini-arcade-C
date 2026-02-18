@@ -62,7 +62,7 @@ void main()
         start_jumble();
         break;
 
-        case 9:
+        case 10:
         start_connect_four();
         break;
 
