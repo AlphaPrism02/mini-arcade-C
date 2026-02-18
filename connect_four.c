@@ -3,7 +3,7 @@
 #define ROWS 6
 #define COLS 7
 
-int start_connect4() {
+int start_connect_four() {
     char board[ROWS][COLS];
     int i, j, col, turn = 0;
     char player;
