@@ -78,7 +78,7 @@ int computerMove() {
     return col;
 }
 
-int main() {
+int start_4connect() {
     int col, turn = 0;
 
     srand(time(0));
