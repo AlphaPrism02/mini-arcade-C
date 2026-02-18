@@ -139,7 +139,7 @@ void logic()
 
 }
 
-int main()
+int start_snake()
 {
     setup();
     while(!gameover)

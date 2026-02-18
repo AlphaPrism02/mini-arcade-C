@@ -8,21 +8,20 @@
 #include </workspaces/mini-arcade-C/calcgame.c>
 #include </workspaces/mini-arcade-C/hangman.c>
 #include </workspaces/mini-arcade-C/tower_of_hanoi.c>
-#include </workspaces/mini-arcade-C/memory-game.C>
+#include </workspaces/mini-arcade-C/memory-game.c>
+#include </workspaces/mini-arcade-C/snake.c>
+#include </workspaces/mini-arcade-C/jumble.c>
 
 
 void main()
 {
     //add menu to start different games
-    char name[50];
-    int choice;
-    printf("ENTER NAME: \n");
-    fgets(name, sizeof(name), stdin);  
+    int choice;  
     printf(".......MINI ARCADE GAMES.......\n");
     sleep(1.5);
 
     printf("What game would you like to play?\n");
-    printf("1 - Tic-Tac-Toe \n2 - Rock Paper Scissors \n3 - Math Quiz\n4 - Hangman\n5 - Tower Of Hanoi\n6 - Number Memory\n");
+    printf("1 - Tic-Tac-Toe \n2 - Rock Paper Scissors \n3 - Math Quiz\n4 - Hangman\n5 - Tower Of Hanoi\n6 - Number Memory\n7 - Snake\n8 - Word Jumble\n0 - exit");
     scanf("%d",&choice);
 
     switch(choice){
@@ -44,6 +43,17 @@ void main()
         case 6:
         start_numMemory();
         break;
+        case 7:
+        start_snake();
+        break;
+        case 8:
+        start_jumble();
+        break;
+        case 0:
+        printf("Successfully Quit Game");
+        break;
+        default:
+        printf("Invalid Input");
     }
     
 }

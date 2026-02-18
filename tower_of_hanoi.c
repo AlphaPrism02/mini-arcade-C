@@ -149,23 +149,26 @@ int countMinMoves(int n)
 
 int choseDiskAmt()
 {
-    sleep(2);
     int n;
-    printf("Enter the number of disks you want to play with\nPick a number between 3-6\n");
-    scanf("%d",&n);
 
-    if(n<3)
+    do
     {
-        printf("the value is too less\n");
-        return choseDiskAmt();
-    }
-    else if(n>6)
-    {
-        printf("the value is too big\n");
-        return choseDiskAmt();
-    }
-    else
-    {return n;}
+        sleep(2);
+        printf("Enter the number of disks you want to play with\nPick a number between 3-6\n");
+        scanf("%d",&n);
+
+        if(n<3)
+        {
+            printf("the value is too less\n");
+        }
+        else if(n>6)
+        {
+            printf("the value is too big\n");
+        }
+
+    } while (n<3 || n>6);
+    
+    return n;
 }
 
 void diskOprInput(int *diskno,char *from_where,char *to_where,int NO_OF_DISKS)
