@@ -21,37 +21,46 @@ void main()
     sleep(1.5);
 
     printf("What game would you like to play?\n");
-    printf("1 - Tic-Tac-Toe \n2 - Rock Paper Scissors \n3 - Math Quiz\n4 - Hangman\n5 - Tower Of Hanoi\n6 - Number Memory\n7 - Snake\n8 - Word Jumble\n0 - exit");
+    printf("1 - Tower of Hanoi \n2 - Snake \n3 - Tic-Tac-Toe\n4 - Hangman\n5 -  Math Quiz\n6 - Number Memory\n7 - Rock Paper Scissors\n8 - Word Jumble\n0 - exit\n");
     scanf("%d",&choice);
 
     switch(choice){
         case 1:
+        start_toh();
+        break;
+
+        case 2:
+        start_snake();
+        break;
+
+        case 3:
         start_tictactoe();
         break;
-        case 2:
-        start_rockpaperscissors();
-        break;
-        case 3:
-        start_calcgame();
-        break;
+
         case 4:
         start_hangman();
         break;
+
         case 5:
-        start_toh();
+        start_calcgame();
         break;
+
         case 6:
         start_numMemory();
         break;
+
         case 7:
-        start_snake();
+        start_rockpaperscissors();
         break;
+
         case 8:
         start_jumble();
         break;
+
         case 0:
         printf("Successfully Quit Game");
         break;
+
         default:
         printf("Invalid Input");
     }
