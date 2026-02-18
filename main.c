@@ -12,7 +12,7 @@
 #include </workspaces/mini-arcade-C/snake.c>
 #include </workspaces/mini-arcade-C/jumble.c>
 #include </workspaces/mini-arcade-C/minesweeper.c>
-
+#include </workspaces/mini-arcade-C/4connect.c>
 
 void main()
 {
@@ -22,7 +22,7 @@ void main()
     sleep(1.5);
 
     printf("What game would you like to play?\n");
-    printf("1 - Tower of Hanoi \n2 - Snake \n3 - Tic-Tac-Toe\n4 - Minesweeper\n5 - Math Quiz\n6 - Number Memory\n7 - Rock Paper Scissors\n8 - Hangman\n9 - Word Jumble\n0 - exit\n");
+    printf("1 - Tower of Hanoi \n2 - Snake \n3 - Tic-Tac-Toe\n4 - Minesweeper\n5 - Math Quiz\n6 - Number Memory\n7 - Rock Paper Scissors\n8 - Hangman\n9 - Word Jumble\n10 - 4 Connect\n0 - exit\n");
     scanf("%d",&choice);
 
     switch(choice){
@@ -60,6 +60,10 @@ void main()
 
         case 9:
         start_jumble();
+        break;
+
+        case 10:
+        start_4connect();
         break;
 
         case 0:
