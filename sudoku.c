@@ -1,6 +1,6 @@
 #include<stdio.h>
 
-int main()
+int start_sudoku()
 {
     int sudoku[4][4]={
         {1,0,0,4},
