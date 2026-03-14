@@ -13,9 +13,13 @@ void start_tictactoe()
 {
     printf("Tic Tac Toe:\nOn your turn, enter coordinates of the grid.\nFor Example: 1a for the first square of the first column\n");
 
-    int no_of_turns=0;
     char grid[3][3]={{' ',' ',' '},{' ',' ',' '},{' ',' ',' '}};
+    float gridprob[3][3]={{0,0,0},{0,0,0},{0,0,0}};
+
     displayTicTacToe(grid);
+    srand(time(NULL));   // seed ONCE
+
+    int no_of_turns=rand() %2; //now start can be either ai or player
 
     int row_ind,col_ind,winner;
     char col;
@@ -34,23 +38,23 @@ void start_tictactoe()
                 int ch;
                 while ((ch = getchar()) != '\n' && ch != EOF); //waits for the input to clear
                 continue;
-            }  //allows the user to reenter the values without going thru the rest of the code
+            }  //allows the user to re-enter the values without going thru the rest of the code
 
-            grid[row_ind][col_ind]='X'; //sets the player mark;
+            grid[row_ind][col_ind]='X';    //sets the player mark
+            gridprob[row_ind][col_ind]=1;  //sets a probability grid
 
             no_of_turns++;
         }
         else //computer turn
         {
-            srand(time(NULL));   // seed ONCE
-
             row_ind = rand() % 3;  // 0, 1, or 2
             col_ind = rand() % 3;
 
             if(badRng(grid[row_ind][col_ind]))
             {continue;} //computer retries to pick a grid value
 
-            grid[row_ind][col_ind]='O'; //sets the computer mark;
+            grid[row_ind][col_ind]='O'; //sets the computer mark
+            gridprob[row_ind][col_ind]=-1;
             sleep(1.5);
 
             no_of_turns++;
@@ -167,7 +171,7 @@ int playerWinner(char grid[3][3], int no_of_turns)
         if( (grid[i][0]== 'X' && grid[i][1]== 'X' && grid[i][2]== 'X') || 
             (grid[0][i]== 'X' && grid[1][i]== 'X' && grid[2][i]== 'X') ||
             (grid[0][0]== 'X' && grid[1][1]== 'X' && grid[2][2]== 'X') ||
-            (grid[2][i]== 'X' && grid[1][i]== 'X' && grid[0][i]== 'X')  )   
+            (grid[2][0]== 'X' && grid[1][1]== 'X' && grid[0][2]== 'X')  )   
             
         {return 1;} //player win
 
@@ -175,7 +179,7 @@ int playerWinner(char grid[3][3], int no_of_turns)
         else if((grid[i][0]== 'O' && grid[i][1]== 'O' && grid[i][2]== 'O') ||
                 (grid[0][i]== 'O' && grid[1][i]== 'O' && grid[2][i]== 'O') ||
                 (grid[0][0]== 'O' && grid[1][1]== 'O' && grid[2][2]== 'O') ||
-                (grid[2][i]== 'O' && grid[1][i]== 'O' && grid[0][i]== 'O')  )
+                (grid[2][0]== 'O' && grid[1][1]== 'O' && grid[0][2]== 'O')  )
                 
         {return 2;} //computer win
 
@@ -184,3 +188,4 @@ int playerWinner(char grid[3][3], int no_of_turns)
 
     return 0; //continue game;
 }
+

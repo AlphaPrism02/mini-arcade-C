@@ -234,7 +234,7 @@ bool moveDisk(int diskno,char from[][20],char to[][20],int NO_OF_DISKS,char from
 
     if(!ringExistsHere(from,diskno,top_ring))
     {
-        printf("top ring index dos not match desired ring operation\n");
+        printf("top ring index does not match desired ring operation\n");
         return false;
     }
 
