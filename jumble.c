@@ -41,46 +41,67 @@ int start_jumble()
 };
 
 char word[20], jumble[20], guess[20];
-int i, length, attempt = 3;
+int i, length,score=0,attempt ;
 
 srand(time(0));
 
-int index = rand() % (sizeof(words) / sizeof(words[0]));
-strcpy(word, words[index]);
-strcpy(jumble, word);
+printf("=== JUMBLE GAME ===\n Play unitl u lose\n");
 
-length = strlen(jumble);
-
-for(i = 0; i < length; i++)
+while(1)
 {
-    int j = rand() % length;
-    char here = jumble[i];
-    jumble[i] = jumble[j];
-    jumble[j] = here; 
+    attempt=3-(score/5);
+    if(attempt<1)
+        attempt=1;
+
+    int index = rand() % (sizeof(words) / sizeof(words[0]));
+    strcpy(word, words[index]);
+    strcpy(jumble, word);
+
+    length=strlen(jumble);
+
+    for (i=0 ; i<length; i++)
+    {
+        int j = rand() % length;
+        char here = jumble[i];
+        jumble[i] = jumble[j];
+        jumble[j] = here;
+    }
+    
+    if(strcmp(jumble, word)==0)
+        continue;
+    
+    printf("Unscramble the word:\n");
+    printf("%s\n", jumble);
+
+
+
+    while (attempt>0)
+    {
+        printf("Enter your guess : ",attempt);
+        scanf("%19s", guess);
+
+        if (strcmp(guess, word) == 0)
+        {
+            score++;
+            printf("Correct! Score: %d\n\n", score);
+            break;
+        }
+        else
+        {
+            attempt--;
+            printf("Wrong ! Attempts left: %d\n", attempt);
+        }
+    }
+
+    if(attempt==0)
+    {
+        printf("\nGAME OVER!\n");
+        printf("Final Score : %d\n",score);
+        printf("Correct Word was, %s\n",word);
+        break;
+    }
 }
 
-printf("Welcome to the JUMBLE GAME\n");
-printf("Unscramble the word:\n");
-printf("%s\n", jumble);
-
-while (attempt > 0)
-{
-    printf("Enter your guess : ");
-    scanf("%s", guess);
-
-    if (strcmp(guess, word) == 0)
-    {
-        printf("Correct , You win !\n");
-        return 0;
-    }
-    else
-    {
-        attempt--;
-        printf("Wrong ! Attempts left: %d\n", attempt);
-    }
-}
-
-printf("GAME OVER! The correct word was : %s\n", word);
 return 0;
 
 }
