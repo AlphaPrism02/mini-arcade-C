@@ -2,12 +2,19 @@
 #include <stdlib.h>
 #include <math.h>
 #include <stdbool.h>
+#include <time.h>
 
-void displayTicTacToe(char grid[3][3]);
-bool invalidInput(int row_ind,char col,int *col_ind);
-bool occupied(char grid_val);
-bool badRng(char grid_val);
-int playerWinner(char grid[3][3], int no_of_turns);
+typedef struct
+{
+    int row,col;
+}Move;
+
+
+void displayTicTacToe(char[3][3]);
+bool invalidInput(Move*,char);
+bool occupied(char);
+int winner(char[3][3]);
+
 
 void start_tictactoe()
 {
@@ -17,11 +24,12 @@ void start_tictactoe()
     float gridprob[3][3]={{0,0,0},{0,0,0},{0,0,0}};
 
     displayTicTacToe(grid);
-    srand(time(NULL));   // seed ONCE
 
-    int no_of_turns=rand() %2; //now start can be either ai or player
+    srand(time(NULL)); // seed ONCE
+    int no_of_turns=rand() %2; //Start can be either ai or player
 
-    int row_ind,col_ind,winner;
+    Move move;
+    int win;
     char col;
 
     while(no_of_turns<9)
@@ -30,31 +38,35 @@ void start_tictactoe()
         {
             sleep(1.5);
             printf("Your Turn:");
-            scanf("%d %c",&row_ind,&col);
-            row_ind--; //We take 1,2,3 as input so we need to row_ind-1 to correct the inputs
+            scanf("%d %c",&move.row,&col);
+            move.row--; //We take 1,2,3 as input so we need to row-1 to correct the inputs
 
-            if(invalidInput(row_ind,col,&col_ind) || occupied(grid[row_ind][col_ind])) 
+            if(invalidInput(&move,col) || occupied(grid[move.row][move.col])) 
             {
+                if(grid[move.row][move.col]=='X') {printf("You already played there\n");}
+
+                else if(grid[move.row][move.col]=='O') {printf("The computer has played there\n");}
+
                 int ch;
                 while ((ch = getchar()) != '\n' && ch != EOF); //waits for the input to clear
                 continue;
             }  //allows the user to re-enter the values without going thru the rest of the code
 
-            grid[row_ind][col_ind]='X';    //sets the player mark
-            gridprob[row_ind][col_ind]=1;  //sets a probability grid
+            grid[move.row][move.col]='X';    //sets the player mark
+            gridprob[move.row][move.col]=1;  //sets a probability grid
 
             no_of_turns++;
         }
         else //computer turn
         {
-            row_ind = rand() % 3;  // 0, 1, or 2
-            col_ind = rand() % 3;
+            move.row = rand() % 3;  // 0, 1, or 2
+            move.col = rand() % 3;
 
-            if(badRng(grid[row_ind][col_ind]))
+            if(occupied(grid[move.row][move.col]))
             {continue;} //computer retries to pick a grid value
 
-            grid[row_ind][col_ind]='O'; //sets the computer mark
-            gridprob[row_ind][col_ind]=-1;
+            grid[move.row][move.col]='O'; //sets the computer mark
+            gridprob[move.row][move.col]=-1;
             sleep(1.5);
 
             no_of_turns++;
@@ -62,14 +74,14 @@ void start_tictactoe()
 
         displayTicTacToe(grid);
 
-        winner=playerWinner(grid,no_of_turns);
-        if(winner==0){continue;}
-        else if(winner==1)
+        win=winner(grid);
+        if(win==0) {continue;}
+        else if(win==10)
         {
             printf("You Win!\n");
             break;
         }
-        else if(winner==2)
+        else if(win==-10)
         {
             printf("You Lose :(\n");
             break;
@@ -96,9 +108,9 @@ void displayTicTacToe(char grid[3][3])
     }
 }
 
-bool invalidInput(int row_ind,char col,int *col_ind)
+bool invalidInput(Move *move,char col)
 {
-    if(row_ind>2 || row_ind<0)
+    if(move->row>2 || move->row<0)
     {
         printf("Invalid values\n");
         return true;
@@ -106,17 +118,17 @@ bool invalidInput(int row_ind,char col,int *col_ind)
 
     if(col=='a' || col=='A')
     {
-        *col_ind=0;
+        move->col=0;
         return false;
     }
     else if(col=='b' || col=='B')
     {
-        *col_ind=1;
+        move->col=1;
         return false;
     }
     else if(col=='c' || col=='C')
     {
-        *col_ind=2;
+        move->col=2;
         return false;
     }
     else
@@ -128,64 +140,35 @@ bool invalidInput(int row_ind,char col,int *col_ind)
 
 bool occupied(char grid_val)
 {
-    if(grid_val==' ')
-    {return false;}
+    if(grid_val==' ') {return false;}
 
-    if(grid_val=='X')
-    {
-        printf("You already played there\n");
-        return true;
-    }
-    else if(grid_val=='O')
-    {
-        printf("The computer has played there\n");
-        return true;
-    }
-    else
-    {return false;}
+    return true;
 }
 
-bool badRng(char grid_val)
+int winner(char grid[3][3])
 {
-    if(grid_val==' ')
-    {return false;}
-
-    if(grid_val=='X')
-    {
-        return true;
-    }
-    else if(grid_val=='O')
-    {
-        return true;
-    }
-    else
-    {return false;}
-}
-
-int playerWinner(char grid[3][3], int no_of_turns)
-{
-    if(no_of_turns<4)  {return 0;} //game has to be at least 4 moves long to win
-
     for(int i=0;i<3;i++)
     {
-        if( (grid[i][0]== 'X' && grid[i][1]== 'X' && grid[i][2]== 'X') || 
-            (grid[0][i]== 'X' && grid[1][i]== 'X' && grid[2][i]== 'X') ||
-            (grid[0][0]== 'X' && grid[1][1]== 'X' && grid[2][2]== 'X') ||
+        if( (grid[i][0]== 'X' && grid[i][1]== 'X' && grid[i][2]== 'X') || //columns
+            (grid[0][i]== 'X' && grid[1][i]== 'X' && grid[2][i]== 'X') || //rows
+            (grid[0][0]== 'X' && grid[1][1]== 'X' && grid[2][2]== 'X') || //diagonals
             (grid[2][0]== 'X' && grid[1][1]== 'X' && grid[0][2]== 'X')  )   
             
-        {return 1;} //player win
+        {return 10;} //player win
 
 
-        else if((grid[i][0]== 'O' && grid[i][1]== 'O' && grid[i][2]== 'O') ||
-                (grid[0][i]== 'O' && grid[1][i]== 'O' && grid[2][i]== 'O') ||
-                (grid[0][0]== 'O' && grid[1][1]== 'O' && grid[2][2]== 'O') ||
+        else if((grid[i][0]== 'O' && grid[i][1]== 'O' && grid[i][2]== 'O') || //columns
+                (grid[0][i]== 'O' && grid[1][i]== 'O' && grid[2][i]== 'O') || //rows
+                (grid[0][0]== 'O' && grid[1][1]== 'O' && grid[2][2]== 'O') || //diagonals
                 (grid[2][0]== 'O' && grid[1][1]== 'O' && grid[0][2]== 'O')  )
                 
-        {return 2;} //computer win
-
+        {return -10;} //computer win
     }
-    if(no_of_turns==9) {return 3;} //tie
+    return 0; //noone won yet
+}
 
-    return 0; //continue game;
+void minimax(char grid[3][3],int depth,bool isComputer)
+{
+    int max=1000;
 }
 

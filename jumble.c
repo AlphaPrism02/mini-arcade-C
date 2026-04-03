@@ -77,7 +77,7 @@ while(1)
 
     while (attempt>0)
     {
-        printf("Enter your guess : ",attempt);
+        printf("Enter your guess : ");
         scanf("%19s", guess);
 
         if (strcmp(guess, word) == 0)

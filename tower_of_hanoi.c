@@ -3,6 +3,7 @@
 #include <time.h>
 #include <stdbool.h>
 #include <string.h>
+#include <ctype.h>
 
 int countMinMoves(int n);
 int choseDiskAmt();
