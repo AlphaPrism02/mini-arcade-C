@@ -21,7 +21,6 @@ void main()
     int choice;  
     printf(".......MINI ARCADE GAMES.......\n");
     sleep(1.5);
-
     printf("What game would you like to play?\n");
     printf("1 - Tower of Hanoi \n2 - Snake \n3 - Tic-Tac-Toe\n4 - Minesweeper\n5 - Math Quiz\n6 - Number Memory\n7 - Rock Paper Scissors\n8 - Hangman\n9 - Word Jumble\n10- Connect Four (Multiplayer)\n11 - Sudoku\n0 - exit\n");
     scanf("%d",&choice);

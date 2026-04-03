@@ -20,8 +20,8 @@ int start_numMemory()
         while(1)
         {
             int digit =rand()%10;
-            char temp[2];
-            sprintf(temp, "%d" ,digit); 
+            char temp[10];
+            snprintf(temp,sizeof(temp),"%d",digit);
             strcat(number,temp);
             system("clear");
             

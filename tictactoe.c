@@ -3,6 +3,7 @@
 #include <math.h>
 #include <stdbool.h>
 #include <time.h>
+#include <unistd.h>
 
 typedef struct
 {
@@ -26,7 +27,16 @@ void start_tictactoe()
     displayTicTacToe(grid);
 
     srand(time(NULL)); // seed ONCE
-    int no_of_turns=rand() %2; //Start can be either ai or player
+    int no_of_turns=0,player;
+
+    if(rand()%2==0)//Start can be either ai or player
+    {
+        player=1;
+    }
+    else
+    {
+        player=0;
+    }
 
     Move move;
     int win;
@@ -34,9 +44,9 @@ void start_tictactoe()
 
     while(no_of_turns<9)
     {
-        if(no_of_turns%2==0) //player turn
+        if(no_of_turns%2==player) //player turn
         {
-            sleep(1.5);
+            sleep(1);
             printf("Your Turn:");
             scanf("%d %c",&move.row,&col);
             move.row--; //We take 1,2,3 as input so we need to row-1 to correct the inputs
@@ -67,16 +77,15 @@ void start_tictactoe()
 
             grid[move.row][move.col]='O'; //sets the computer mark
             gridprob[move.row][move.col]=-1;
-            sleep(1.5);
+            sleep(1);
 
             no_of_turns++;
         }
 
         displayTicTacToe(grid);
-
+        
         win=winner(grid);
-        if(win==0) {continue;}
-        else if(win==10)
+        if(win==10)
         {
             printf("You Win!\n");
             break;
@@ -86,11 +95,12 @@ void start_tictactoe()
             printf("You Lose :(\n");
             break;
         }
-        else
+        else if(win==0 && no_of_turns==9)
         {
             printf("Tied -_-\n");
             break;
         }
+        else {continue;}
     }
     //display(grid);
 }
