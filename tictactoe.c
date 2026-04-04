@@ -15,6 +15,8 @@ void displayTicTacToe(char[3][3]);
 bool invalidInput(Move*,char);
 bool occupied(char);
 int winner(char[3][3]);
+int minimax(char[3][3],int,bool,int);
+Move computerMove(char[3][3],int);
 
 
 void start_tictactoe()
@@ -22,8 +24,6 @@ void start_tictactoe()
     printf("Tic Tac Toe:\nOn your turn, enter coordinates of the grid.\nFor Example: 1a for the first square of the first column\n");
 
     char grid[3][3]={{' ',' ',' '},{' ',' ',' '},{' ',' ',' '}};
-    float gridprob[3][3]={{0,0,0},{0,0,0},{0,0,0}};
-
     displayTicTacToe(grid);
 
     srand(time(NULL)); // seed ONCE
@@ -39,7 +39,7 @@ void start_tictactoe()
     }
 
     Move move;
-    int win;
+    int score;
     char col;
 
     while(no_of_turns<9)
@@ -63,20 +63,13 @@ void start_tictactoe()
             }  //allows the user to re-enter the values without going thru the rest of the code
 
             grid[move.row][move.col]='X';    //sets the player mark
-            gridprob[move.row][move.col]=1;  //sets a probability grid
 
             no_of_turns++;
         }
         else //computer turn
         {
-            move.row = rand() % 3;  // 0, 1, or 2
-            move.col = rand() % 3;
-
-            if(occupied(grid[move.row][move.col]))
-            {continue;} //computer retries to pick a grid value
-
+            move=computerMove(grid,no_of_turns);
             grid[move.row][move.col]='O'; //sets the computer mark
-            gridprob[move.row][move.col]=-1;
             sleep(1);
 
             no_of_turns++;
@@ -84,18 +77,18 @@ void start_tictactoe()
 
         displayTicTacToe(grid);
         
-        win=winner(grid);
-        if(win==10)
+        score=winner(grid);
+        if(score==-10)
         {
             printf("You Win!\n");
             break;
         }
-        else if(win==-10)
+        else if(score==+10)
         {
             printf("You Lose :(\n");
             break;
         }
-        else if(win==0 && no_of_turns==9)
+        else if(score==0 && no_of_turns==9)
         {
             printf("Tied -_-\n");
             break;
@@ -164,7 +157,7 @@ int winner(char grid[3][3])
             (grid[0][0]== 'X' && grid[1][1]== 'X' && grid[2][2]== 'X') || //diagonals
             (grid[2][0]== 'X' && grid[1][1]== 'X' && grid[0][2]== 'X')  )   
             
-        {return 10;} //player win
+        {return -10;} //player score
 
 
         else if((grid[i][0]== 'O' && grid[i][1]== 'O' && grid[i][2]== 'O') || //columns
@@ -172,13 +165,81 @@ int winner(char grid[3][3])
                 (grid[0][0]== 'O' && grid[1][1]== 'O' && grid[2][2]== 'O') || //diagonals
                 (grid[2][0]== 'O' && grid[1][1]== 'O' && grid[0][2]== 'O')  )
                 
-        {return -10;} //computer win
+        {return +10;} //computer score
     }
     return 0; //noone won yet
 }
 
-void minimax(char grid[3][3],int depth,bool isComputer)
+int minimax(char grid[3][3],int depth,bool isComputer,int no_of_turns)
 {
-    int max=1000;
+    int score=winner(grid);
+
+    if(score==10 || score==-10) {return score;} //if computer wins or player wins return score and get best move
+
+    if(no_of_turns==9) {return 0;} //if tie return 0 since that will be the best outcome for the computer
+    
+    if(isComputer)
+    {
+        int bestScore=-100;
+
+        for(int i=0;i<3;i++)
+        {
+            for(int j=0;j<3;j++)
+            {
+                if(grid[i][j]!=' ') {continue;} //skip occupied cells
+
+                grid[i][j]='O'; //computer move
+                int score=minimax(grid,depth+1,false,no_of_turns+1);
+                grid[i][j]=' '; //undo move
+
+                bestScore=(score>bestScore)?score:bestScore; //max the computer score
+            }
+        }
+        return bestScore;
+    }
+    else
+    {
+        int bestScore=100;
+
+        for(int i=0;i<3;i++)
+        {
+            for(int j=0;j<3;j++)
+            {
+                if(grid[i][j]!=' ') {continue;} //skip occupied cells
+
+                grid[i][j]='X'; //player move
+                int score=minimax(grid,depth+1,true,no_of_turns+1);
+                grid[i][j]=' '; //undo move
+
+                bestScore=(score<bestScore)?score:bestScore; //min the player score
+            }
+        }
+        return bestScore;
+    }
 }
 
+Move computerMove(char grid[3][3],int no_of_turns)
+{
+    int bestScore=-100;
+    Move bestMove;
+
+    for(int i=0;i<3;i++)
+    {
+        for(int j=0;j<3;j++)
+        {
+            if(grid[i][j]!=' ') {continue;} //skip occupied cells
+
+            grid[i][j]='O'; //computer move
+            int score=minimax(grid,0,false,no_of_turns+1);
+            grid[i][j]=' '; //undo move
+
+            if(score>bestScore)
+            {
+                bestScore=score;
+                bestMove.row=i;
+                bestMove.col=j;
+            }
+        }
+    }
+    return bestMove;
+}
