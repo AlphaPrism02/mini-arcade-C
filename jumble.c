@@ -3,7 +3,7 @@
 #include<string.h>
 #include<time.h>
 
-int main()
+int start_jumble()
 {
     char words[][20] = {
 "computer","keyboard","monitor","mouse","printer",
