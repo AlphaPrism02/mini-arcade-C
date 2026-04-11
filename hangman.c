@@ -1,5 +1,7 @@
 #include <stdio.h>
 #include <string.h>
+#include <stdlib.h>
+#include <time.h>
 
 // Function to display hangman based on lives
 void hangman(int lives) {
@@ -12,9 +14,9 @@ void hangman(int lives) {
     else if (lives == 2)
         printf("\n O\n/| ");
     else if (lives == 1)
-        printf("\n O\n | ");  
+        printf("\n O\n | ");
     else if (lives == 0)
-        printf("\n O ");   
+        printf("\n O ");
 }
 
 // Main game logic
@@ -47,9 +49,9 @@ void playLevel(char word[]) {
 
         if (!found) {
             lives--;
-            printf("Wrong guess!");
+            printf("\nWrong guess!");
         } else {
-            printf("Correct!");
+            printf("\nCorrect!");
         }
 
         if (strcmp(word, guess) == 0)
@@ -57,29 +59,46 @@ void playLevel(char word[]) {
     }
 
     if (win)
-        printf("\n Level Cleared!");
+        printf("\nLevel Cleared!\n");
     else {
-        printf("\n You Lost! Word was: %s", word);
+        printf("\nYou Lost! Word was: %s\n", word);
         exit(0);
     }
 }
 
-void start_hangman() {
-    printf("HANGMAN GAME IN C \n");
-
-    char levels[5][20] = {
-    "array",            // Level 1
-    "pointer",          // Level 2
-    "compiler",         // Level 3
-    "algorithm",        // Level 4
-    "dataabstraction"   // Level 5
-
+// Function to return a random word
+char* getRandomWord() {
+    static char words[][20] = {
+        "array", "pointer", "compiler", "algorithm", "dataabstraction",
+        "function", "variable", "iteration", "recursion", "structure",
+        "debugging", "operator", "syntax", "library", "integer"
     };
 
-    for (int i = 0; i < 5; i++) {
+    int totalWords = sizeof(words) / sizeof(words[0]);
+    int index = rand() % totalWords;
+
+    return words[index];
+}
+
+// Function to start the Hangman game
+void start_hangman() {
+    printf("HANGMAN GAME IN C\n");
+
+    srand(time(0));  // Seed for randomness
+
+    int levels = 5;  // Number of rounds
+
+    for (int i = 0; i < levels; i++) {
         printf("\n\n--- LEVEL %d ---\n", i + 1);
-        playLevel(levels[i]);
+        char *word = getRandomWord();
+        playLevel(word);
     }
 
-    printf("\n CONGRATULATIONS! You completed all levels!");
+    printf("\nCONGRATULATIONS! You completed all levels!\n");
+}
+
+// Main function
+int main() {
+    start_hangman();
+    return 0;
 }
