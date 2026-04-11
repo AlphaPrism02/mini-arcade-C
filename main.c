@@ -10,10 +10,9 @@
 #include </workspaces/mini-arcade-C/tower_of_hanoi.c>
 #include </workspaces/mini-arcade-C/memory-game.c>
 #include </workspaces/mini-arcade-C/snake.c>
-#include </workspaces/mini-arcade-C/jumble.c>
 #include </workspaces/mini-arcade-C/minesweeper.c>
 #include </workspaces/mini-arcade-C/connect_four.c>
-#include </workspaces/mini-arcade-C/sudoku.c>
+#include </workspaces/mini-arcade-C/jumble.c>
 
 /* ── ANSI colour codes ─────────────────────────────── */
 #define RESET   "\033[0m"
@@ -98,7 +97,7 @@ void showMainMenu() {
     printf("\n");
     printPair(5, "Hangman" ,       6, "Connect Four");
     printf("\n");
-    printPair(7, "Sudoku",              0, "Exit");
+    printPair(7, "Jumble",              0, "Exit");
 
     /* Footer */
     printf("\n");
@@ -145,7 +144,7 @@ int main() {
     const char *names[] = {
         "", "Tower of Hanoi", "Snake", "Tic-Tac-Toe",
         "Minesweeper", "Hangman",
-        "Connect Four", "Sudoku", "Hangman"
+        "Connect Four", "Jumble"
     };
 
     
@@ -187,8 +186,8 @@ int main() {
             case  5: start_hangman();           break;
          
             case 6: start_connect_four();      break;
-            case 7: start_sudoku();            break;
-            case 8: start_hangman();            break;
+            case 7: start_jumble();            break;
+        
 
         }
 

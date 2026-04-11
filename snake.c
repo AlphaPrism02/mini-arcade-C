@@ -47,7 +47,7 @@ void draw()
 	    }
             else if (i == foodY && j == foodX)
             {
-                printf("F");
+                printf("*");
             }
             else
             {
