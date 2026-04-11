@@ -192,6 +192,7 @@ int main() {
 
         }
 
+        sleep(3);
         returnScreen(names[choice]);
     }
 

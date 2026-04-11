@@ -323,9 +323,7 @@ Move medDiffMove(char grid[3][3],int no_of_turns)
         }
 
         //if no move to block player from winning, play random move
-        move.row=rand()%3;
-        move.col=rand()%3;
-        return move;
+        easyDiffMove(grid);
     }
 }
 

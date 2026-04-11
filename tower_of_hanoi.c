@@ -97,7 +97,10 @@ void start_toh()
         }
         
         if(!disk_moved)
-        {continue;}
+        {
+            sleep(1);
+            continue;
+        }
 
         no_of_turns++;
         displayTOH(startpos,auxpos,destpos,NO_OF_DISKS);
@@ -175,7 +178,7 @@ int choseDiskAmt()
 void diskOprInput(int *diskno,char *from_where,char *to_where,int NO_OF_DISKS)
 {
     sleep(1);
-    printf("\nEnter the disk operation u want to perform\nFor Example:\nTo move disk 1 from start to auxillary, enter: 1 s a\n");
+    printf("\nEnter the disk you want to  move\nFor Example:\nTo move disk 1 from start to auxillary, enter: 1 s a\n");
     printf("Enter 0 to quit\n");
     scanf("%d",diskno);
 
@@ -206,7 +209,7 @@ bool isInvalidInput(int diskno,char from_where,char to_where,int NO_OF_DISKS)
         (from_where!='a' && from_where!='A') &&
         (from_where!='d' && from_where!='D')  )
     {
-        printf("Invalid position character\n");
+        printf("Start does not exist\n");
         return true;
     }
 
@@ -214,7 +217,7 @@ bool isInvalidInput(int diskno,char from_where,char to_where,int NO_OF_DISKS)
         (to_where!='a' && to_where!='A') &&
         (to_where!='d' && to_where!='D')  )
     {
-        printf("Invalid position character\n");
+        printf("Destination does not exist\n");
         return true;
     }
 
@@ -235,7 +238,7 @@ bool moveDisk(int diskno,char from[][20],char to[][20],int NO_OF_DISKS,char from
 
     if(!ringExistsHere(from,diskno,top_ring))
     {
-        printf("top ring index does not match desired ring operation\n");
+        printf("cannot move this ring\n");
         return false;
     }
 

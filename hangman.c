@@ -96,9 +96,3 @@ void start_hangman() {
 
     printf("\nCONGRATULATIONS! You completed all levels!\n");
 }
-
-// Main function
-int main() {
-    start_hangman();
-    return 0;
-}
