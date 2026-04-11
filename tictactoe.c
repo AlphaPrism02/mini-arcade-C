@@ -16,11 +16,27 @@ bool invalidInput(Move*,char);
 bool occupied(char);
 int winner(char[3][3]);
 int minimax(char[3][3],int,bool,int);
-Move computerMove(char[3][3],int);
+Move easyDiffMove(char[3][3]);
+Move medDiffMove(char[3][3],int);
+Move hardDiffMove(char[3][3],int);
+
 
 
 void start_tictactoe()
 {
+    int difficulty;
+    printf("Select Difficulty:\n1.Easy\n2.Medium\n3.Hard\n");
+    scanf("%d",&difficulty);
+
+    while(difficulty<1||difficulty>3)
+    {
+        printf("Invalid Difficulty\n");
+        int ch;
+        while ((ch=getchar())!='\n' && ch!=EOF); //waits for the input to clear
+        scanf("%d",&difficulty);
+    }
+
+    
     printf("Tic Tac Toe:\nOn your turn, enter coordinates of the grid.\nFor Example: 1a for the first square of the first column\n");
 
     char grid[3][3]={{' ',' ',' '},{' ',' ',' '},{' ',' ',' '}};
@@ -58,7 +74,7 @@ void start_tictactoe()
                 else if(grid[move.row][move.col]=='O') {printf("The computer has played there\n");}
 
                 int ch;
-                while ((ch = getchar()) != '\n' && ch != EOF); //waits for the input to clear
+                while ((ch=getchar())!='\n' && ch!=EOF); //waits for the input to clear
                 continue;
             }  //allows the user to re-enter the values without going thru the rest of the code
 
@@ -68,7 +84,19 @@ void start_tictactoe()
         }
         else //computer turn
         {
-            move=computerMove(grid,no_of_turns);
+            if(difficulty==1)
+            {
+                move=easyDiffMove(grid);
+            }
+            else if(difficulty==2)
+            {
+                move=medDiffMove(grid,no_of_turns);
+            }
+            else
+            {
+                move=hardDiffMove(grid,no_of_turns);
+            }
+
             grid[move.row][move.col]='O'; //sets the computer mark
             sleep(1);
 
@@ -170,6 +198,137 @@ int winner(char grid[3][3])
     return 0; //noone won yet
 }
 
+Move easyDiffMove(char grid[3][3])
+{
+    Move move;
+
+    do
+    {
+        move.row=rand()%3;
+        move.col=rand()%3;
+    } while(occupied(grid[move.row][move.col]));
+
+    return move;
+}
+
+Move medDiffMove(char grid[3][3],int no_of_turns)
+{
+    Move move;
+
+    if(no_of_turns==0)
+    {
+        move.row=1;
+        move.col=1;
+        return move;
+    }
+    else if(no_of_turns==1)
+    {
+        if(grid[1][1]=='X')
+        {
+            move.row=rand()%2*2; //0 or 2
+            move.col=rand()%2*2;
+        }
+        else
+        {
+            move.row=1;
+            move.col=1;
+        }
+        return move;
+    }
+    else
+    {
+        for(int i=0;i<3;i++)
+        {
+            // rowwise check for 2 X's to block player from winning
+            if(grid[i][0]=='X' && grid[i][1]=='X' && grid[i][2]==' ')
+            {
+                move.row=i;
+                move.col=2;
+                return move;
+            }
+            else if(grid[i][0]=='X' && grid[i][1]==' ' && grid[i][2]=='X')
+            {
+                move.row=i;
+                move.col=1;
+                return move;
+            }
+            else if(grid[i][0]==' ' && grid[i][1]=='X' && grid[i][2]=='X')
+            {
+                move.row=i;
+                move.col=0;
+                return move;
+            }
+
+            // columnwise check for 2 X's to block player from winning
+            else if(grid[0][i]=='X' && grid[1][i]=='X' && grid[2][i]==' ')
+            {
+                move.row=2;
+                move.col=i;
+                return move;
+            }
+            else if(grid[0][i]=='X' && grid[1][i]==' ' && grid[2][i]=='X')
+            {
+                move.row=1;
+                move.col=i;
+                return move;
+            }
+            else if(grid[0][i]==' ' && grid[1][i]=='X' && grid[2][i]=='X')
+            {
+                move.row=0;
+                move.col=i;
+                return move;
+            }
+        }
+
+        //diagonal check for 2 X's to block player from winning
+        
+        //left diag
+        if(grid[0][0]=='X' && grid[1][1]=='X' && grid[2][2]==' ')
+        {
+            move.row=2;
+            move.col=2;
+            return move;
+        }
+        else if(grid[0][0]=='X' && grid[1][1]==' ' && grid[2][2]=='X')
+        {
+            move.row=1;
+            move.col=1;
+            return move;
+        }
+        else if(grid[0][0]==' ' && grid[1][1]=='X' && grid[2][2]=='X')
+        {
+            move.row=0;
+            move.col=0;
+            return move;
+        }
+
+        //right diag
+        else if(grid[2][0]=='X' && grid[1][1]=='X' && grid[0][2]==' ')
+        {
+            move.row=0;
+            move.col=2;
+            return move;
+        }
+        else if(grid[2][0]=='X' && grid[1][1]==' ' && grid[0][2]=='X')
+        {
+            move.row=1;
+            move.col=1;
+            return move;
+        }
+        else if(grid[2][0]==' ' && grid[1][1]=='X' && grid[0][2]=='X')
+        {
+            move.row=2;
+            move.col=0;
+            return move;
+        }
+
+        //if no move to block player from winning, play random move
+        move.row=rand()%3;
+        move.col=rand()%3;
+        return move;
+    }
+}
+
 int minimax(char grid[3][3],int depth,bool isComputer,int no_of_turns)
 {
     int score=winner(grid);
@@ -218,7 +377,7 @@ int minimax(char grid[3][3],int depth,bool isComputer,int no_of_turns)
     }
 }
 
-Move computerMove(char grid[3][3],int no_of_turns)
+Move hardDiffMove(char grid[3][3],int no_of_turns)
 {
     int bestScore=-100;
     Move bestMove;
