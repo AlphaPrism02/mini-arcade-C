@@ -3,7 +3,7 @@
 #include<string.h>
 #include<time.h>
 
-int start_jumble()
+int main()
 {
     char words[][20] = {
 "computer","keyboard","monitor","mouse","printer",
@@ -38,70 +38,93 @@ int start_jumble()
 "sun","star","galaxy","rocket","orbit",
 "time","distance","pressure","density","angle",
 "circle","radius","volume","meter","second"
-};
+    };
 
-char word[20], jumble[20], guess[20];
-int i, length,score=0,attempt ;
+    char word[20], jumble[20], guess[20];
+    int i, length, score = 0, attempt;
+    int difficulty;
 
-srand(time(0));
+    srand(time(0));
 
-printf("=== JUMBLE GAME ===\n Play unitl u lose\n");
+    printf("=== JUMBLE GAME ===\n");
 
-while(1)
-{
-    attempt=3-(score/5);
-    if(attempt<1)
-        attempt=1;
-
-    int index = rand() % (sizeof(words) / sizeof(words[0]));
-    strcpy(word, words[index]);
-    strcpy(jumble, word);
-
-    length=strlen(jumble);
-
-    for (i=0 ; i<length; i++)
+    while (1)
     {
-        int j = rand() % length;
-        char here = jumble[i];
-        jumble[i] = jumble[j];
-        jumble[j] = here;
-    }
-    
-    if(strcmp(jumble, word)==0)
-        continue;
-    
-    printf("Unscramble the word:\n");
-    printf("%s\n", jumble);
+        printf("\nChoose Difficulty:\n");
+        printf("1. Easy \n");
+        printf("2. Medium \n");
+        printf("3. Hard \n");
+        printf("Enter choice: ");
+        scanf("%d", &difficulty);
 
-
-
-    while (attempt>0)
-    {
-        printf("Enter your guess : ");
-        scanf("%19s", guess);
-
-        if (strcmp(guess, word) == 0)
+        // pick valid word based on difficulty
+        while (1)
         {
-            score++;
-            printf("Correct! Score: %d\n\n", score);
+            int index = rand() % (sizeof(words) / sizeof(words[0]));
+            strcpy(word, words[index]);
+            length = strlen(word);
+
+            if ((difficulty == 1 && length == 5) ||
+                (difficulty == 2 && (length == 6 || length == 7)) ||
+                (difficulty == 3 && length >= 8))
+                break;
+        }
+
+        strcpy(jumble, word);
+
+        // jumble logic
+        for (i = 0; i < length; i++)
+        {
+            int j = rand() % length;
+            char temp = jumble[i];
+            jumble[i] = jumble[j];
+            jumble[j] = temp;
+        }
+
+        if (strcmp(jumble, word) == 0)
+            continue;
+
+        attempt = 3;
+
+        printf("\nUnscramble: %s\n", jumble);
+
+        while (attempt > 0)
+        {
+            printf("Enter guess: ");
+            scanf("%19s", guess);
+
+            if (strcmp(guess, word) == 0)
+            {
+                score++;
+                printf("Correct! Score: %d\n", score);
+                break;
+            }
+            else
+            {
+                attempt--;
+                printf("Wrong! Attempts left: %d\n", attempt);
+            }
+        }
+
+        if (attempt == 0)
+        {
+            printf("\nGAME OVER!\n");
+            printf("Final Score: %d\n", score);
+            printf("Word was: %s\n", word);
             break;
         }
-        else
+
+        // continue option
+        int choice;
+        printf("\n1. Continue\n2. Exit\nEnter choice: ");
+        scanf("%d", &choice);
+
+        if (choice == 2)
         {
-            attempt--;
-            printf("Wrong ! Attempts left: %d\n", attempt);
+            printf("Final Score: %d\n", score);
+            break;
         }
     }
 
-    if(attempt==0)
-    {
-        printf("\nGAME OVER!\n");
-        printf("Final Score : %d\n",score);
-        printf("Correct Word was, %s\n",word);
-        break;
-    }
-}
-
-return 0;
-
+    return 0;
 }
