@@ -145,7 +145,7 @@ int main() {
     const char *names[] = {
         "", "Tower of Hanoi", "Snake", "Tic-Tac-Toe",
         "Minesweeper", "Hangman",
-        "Connect Four", "Sudoku"
+        "Connect Four", "Sudoku", "Hangman"
     };
 
     
@@ -188,6 +188,8 @@ int main() {
          
             case 6: start_connect_four();      break;
             case 7: start_sudoku();            break;
+            case 8: start_hangman();            break;
+
         }
 
         returnScreen(names[choice]);
