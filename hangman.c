@@ -3,7 +3,7 @@
 #include <stdlib.h>
 #include <time.h>
 
-// Function to display hangman based on lives
+// func to display lives
 void hangman(int lives) {
     if (lives == 5)
         printf("\n O\n/|\\\n/ \\ ");
@@ -19,7 +19,7 @@ void hangman(int lives) {
         printf("\n O ");
 }
 
-// Main game logic
+// main game
 void playLevel(char word[]) {
     int length = strlen(word);
     char guess[20];
@@ -66,7 +66,7 @@ void playLevel(char word[]) {
     }
 }
 
-// Function to return a random word
+// random word
 char* getRandomWord() {
     static char words[][20] = {
         "array", "pointer", "compiler", "algorithm", "dataabstraction",
@@ -80,7 +80,7 @@ char* getRandomWord() {
     return words[index];
 }
 
-// Function to start the Hangman game
+// function to start the hangman game
 void start_hangman() {
     printf("HANGMAN GAME IN C\n");
 

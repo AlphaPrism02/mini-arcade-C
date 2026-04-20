@@ -51,7 +51,7 @@ int start_connect_four() {
 
         turn++;
 
-        // ---------- CHECK WIN ----------
+        // check win
         int win = 0;
 
         // Horizontal
